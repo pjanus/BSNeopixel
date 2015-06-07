@@ -1,4 +1,4 @@
-#include "BSNeopixel.h"
+#include <BSNeopixel.h>
 
 #include <avr/power.h>
 

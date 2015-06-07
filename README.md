@@ -1,2 +1,2 @@
-# hci-bookstand
-Projekt na hci
+# BSNeopixel
+Lib do projektu na hci

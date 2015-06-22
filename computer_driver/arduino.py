@@ -5,11 +5,12 @@ from visualisation import v
 
 SERIAL_PORT = '/dev/cu.usbmodem1411'
 
+
 def send(ser):
     data, beat = v.get()
-    message = ''.join(chr(i) for i in data)
+    message = ''.join(chr(i) for i in data + [int(beat)])
 
-    print repr(message), data
+    print repr(message), data, beat
     ser.write(message)
 
 

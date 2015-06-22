@@ -3,7 +3,7 @@
 #include <avr/power.h>
 
 BSNeopixel bs = BSNeopixel();
-uint32_t RED, GREEN, BLUE, BLACK;
+uint32_t RED, GREEN, BLUE, BLACK, YELLOW;
 uint32_t COLORS[5];
 
 void setup() {
@@ -16,6 +16,7 @@ void setup() {
     GREEN = bs.Color(0,128,0);
     BLUE = bs.Color(0,0,128);
     BLACK = bs.Color(0,0,0);
+    YELLOW = bs.Color(128, 128, 0);
     
     COLORS[0] = bs.Color(0, 0, 128),
     COLORS[1] = bs.Color(0, 32, 96),
@@ -32,16 +33,21 @@ void loop() {
         }
     }
 
-    byte rows[5];
-    int read = Serial.readBytes(rows, 5);
+    byte rows[bs.dataBytes];
+    int read = Serial.readBytes(rows, bs.dataBytes);
     if (read == 0)
       return;
-    Serial.print(read);
-    Serial.println();
-    Serial.write(rows, 5);
-    Serial.println();
+
+    // for (int row = 0; row < 5; row++) {
+    //     bs.setRowHeight(row, rows[row]+1, COLORS[row]);
+    // }
     for (int row = 0; row < 5; row++) {
-        bs.setRowHeight(row, rows[row]+1, COLORS[row]);
+        for (int i = 0; i < rows[row]+1; i++) {
+            uint32_t color = BLUE;
+            if (i > 20) color = YELLOW;
+            if (i > 31) color = RED; 
+            bs.setPixelColor(row, i, color);
+        }
     }
     bs.show();
 }

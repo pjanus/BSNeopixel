@@ -7,7 +7,6 @@ const uint8_t
   BSNeopixel::shelfCols = 5,
   BSNeopixel::dataBytes = 6;
 const uint16_t BSNeopixel::shelfLEDs = 8;
-uint8_t BSNeopixel::pins[5] = {5, 6, 7, 8, 9};
 
 
 BSNeopixel::BSNeopixel(uint8_t* p)
@@ -57,6 +56,11 @@ void BSNeopixel::setShelfColor(uint8_t row, uint8_t col, uint32_t color)
 void BSNeopixel::setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint32_t color)
 {
 	strips[r]->setPixelColor(c * shelfLEDs + p, color);
+}
+
+void BSNeopixel::setPixelColor(uint8_t r, uint8_t c, uint32_t color)
+{
+	strips[r]->setPixelColor(c, color);
 }
 
 void BSNeopixel::setRowHeight(uint8_t r, uint8_t h, uint32_t color)

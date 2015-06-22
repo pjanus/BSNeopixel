@@ -1,14 +1,6 @@
 #include "BSNeopixel.h"
 
 
-
-const uint8_t
-  BSNeopixel::shelfRows = 5,
-  BSNeopixel::shelfCols = 5,
-  BSNeopixel::dataBytes = 8;
-const uint16_t BSNeopixel::shelfLEDs = 8;
-
-
 BSNeopixel::BSNeopixel(uint8_t* p)
 {
   if (p != NULL) {

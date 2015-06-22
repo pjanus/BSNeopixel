@@ -30,10 +30,10 @@ class BSNeopixel
     Adafruit_NeoPixel* strip;
     static const uint16_t shelfLEDs;
     static const uint8_t
-        shelfRows,
-        shelfCols,
-        dataBytes;
-    uint8_t pins[5] = {5, 6, 7, 8, 9};
+        shelfRows = 5,
+        shelfCols = 5,
+        dataBytes = 8;
+    static uint8_t pins[5];
 };
 
 #endif

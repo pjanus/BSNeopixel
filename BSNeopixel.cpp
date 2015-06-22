@@ -1,5 +1,15 @@
 #include "BSNeopixel.h"
 
+
+
+const uint8_t
+  BSNeopixel::shelfRows = 5,
+  BSNeopixel::shelfCols = 5,
+  BSNeopixel::dataBytes = 6;
+const uint16_t BSNeopixel::shelfLEDs = 8;
+uint8_t BSNeopixel::pins[5] = {5, 6, 7, 8, 9};
+
+
 BSNeopixel::BSNeopixel(uint8_t* p)
 {
   if (p != NULL) {
@@ -49,7 +59,7 @@ void BSNeopixel::setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint32_t color)
 	strips[r]->setPixelColor(c * shelfLEDs + p, color);
 }
 
-void BSNeopixel::setRowColor(uint8_t r, uint8_t h, uint32_t color)
+void BSNeopixel::setRowHeight(uint8_t r, uint8_t h, uint32_t color)
 {
 	for (int i = 0; i < h; i++) {
 		strips[r]->setPixelColor(i, color);

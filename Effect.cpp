@@ -1,4 +1,5 @@
 #include "Effect.h"
+#include "Animation.h"
 
 void Equalizer::step(uint8_t data[])
 {
@@ -42,11 +43,6 @@ void Rainbow::step(uint8_t data[]) {
             byte x = (time >> 2) - (box << 3);
             uint32_t color = hsvToRgb((uint32_t)x * 359 / 256, 255, 255);
 
-            Serial.print(row);
-            Serial.print(" ");
-            Serial.print(col);
-            Serial.print(" ");
-            Serial.println(color);
             bs.setShelfColor(row, col, color);
             box++;
         }
@@ -72,4 +68,17 @@ uint32_t Rainbow::hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
         case 5: r = v; g = p; b = q; break;
     }
     return bs.Color(r, g, b);
+}
+
+void Animation::step(uint8_t data[]) {
+    if (data[5])
+        for (int i = 0; i < bs.shelfRows; i++)
+            for (int j = 0; j < bs.shelfCols; j++) {
+                bs.setShelfColor(i, j, background_color);
+                if ((ANIMATION[animation_step][j] >> (BSNeopixel::shelfRows - i - 1)) & 1)
+                    bs.setShelfColor(i, j, animation_color);
+            }
+    ++animation_step %= NUMBER_OF_STEPS;
+
+    bs.show();
 }

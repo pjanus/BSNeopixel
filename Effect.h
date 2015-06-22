@@ -55,4 +55,16 @@ class Rainbow: public Effect
     uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
 };
 
+class Animation: public Effect
+{
+    public:
+    Animation(BSNeopixel& bs) : Effect(bs), animation_step(0), background_color(Effect::GREEN), animation_color(Effect::RED) {}
+
+    void step(uint8_t data[]);
+
+    private:
+    uint32_t animation_step;
+    uint32_t background_color, animation_color;
+};
+
 #endif

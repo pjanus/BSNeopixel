@@ -121,3 +121,58 @@ int Dots::countDotsNumber(uint8_t data[])
     }
     return sum / (39 * bs.shelfCols / MAX_DOTS) + 1;
 }
+
+void Snake::step(uint8_t data[])
+{
+    bs.colorWipe(GREEN);
+    bs.setShelfColor(snake_row[0], snake_col[0], bs.Color(255,0,0));
+    for (int i = 1; i < max_len; i++) {
+        if (snake_row[i] != -1) {
+            bs.setShelfColor(snake_row[i], snake_col[i], RED);
+        }
+    }
+    bs.show();
+
+    shift();
+
+    bool collision = true;
+    while(collision) {
+        collision = false;
+        int dx = 0, dy = 0;
+        if (random(2)==0) {
+            dx = random(2)*2 - 1;
+        } else {
+            dy = random(2)*2 - 1;
+        }
+
+        uint8_t align = bs.shelfRows;
+        snake_row[0] = (snake_row[1] + dx + align) % align;
+        snake_col[0] = (snake_col[1] + dy + align) % align;
+
+        for (int i = 1; i < max_len; i++) {
+            if (snake_row[i] != -1) {
+                if (snake_row[0] == snake_row[i] && snake_col[0] == snake_col[i]) {
+                    collision = true;
+                }
+            }
+        }
+    }
+    delay(400);
+}
+
+void Snake::nextShelf(int8_t snake[])
+{
+    // snake[0] = ((random(2)*2 - 1) + snake[1] + max_len - 1)%max_len;
+    int randx = random(2)*2 - 1;
+    snake[0] = (randx + snake[1]);
+    snake[0] = snake[0] + bs.shelfRows;
+    snake[0] = snake[0] % bs.shelfRows;
+}
+
+void Snake::shift()
+{
+    for (int i = max_len-1; i > 0; i--) {
+        snake_row[i] = snake_row[i-1];
+        snake_col[i] = snake_col[i-1];
+    }
+}

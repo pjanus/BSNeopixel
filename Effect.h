@@ -16,8 +16,7 @@ public:
 	    GREEN = bs.Color(0,128,0);
 	    BLUE = bs.Color(0,0,128);
 	    BLACK = bs.Color(0,0,0);
-	    YELLOW = bs.Color(128, 128, 0);
-	    
+	    YELLOW = bs.Color(128, 128, 0);    
 	}
 	virtual ~Effect () {}
 
@@ -35,7 +34,6 @@ public:
 	Equalizer(BSNeopixel &bs)
 	: Effect(bs)
 	{
-
 	    COLORS[0] = bs.Color(0, 0, 128),
 	    COLORS[1] = bs.Color(0, 32, 96),
 	    COLORS[2] = bs.Color(0, 64, 64),
@@ -47,7 +45,6 @@ public:
 	void tricolors(int row, int i);
 	void gradient(int row, int i);
 };
-
 
 /* rainbow */
 
@@ -94,4 +91,29 @@ public:
 	void step(uint8_t data[]);
 };
 
+
+class Snake : public Effect
+{
+private:
+	static const int max_len = 5;
+	int8_t snake_row[max_len];
+	int8_t snake_col[max_len];
+
+	void nextShelf(int8_t snake[]);
+	void shift();
+public:
+	Snake(BSNeopixel &bs)
+	: Effect(bs)
+	{
+		randomSeed(analogRead(0));
+		snake_row[0] = 2;
+		snake_col[0] = 2;
+		for (int i = 1; i < max_len; i++) {
+			snake_row[i] = -1;
+			snake_row[i] = -1;
+		}
+	}
+
+	void step(uint8_t data[]);
+};
 #endif

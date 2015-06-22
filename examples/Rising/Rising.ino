@@ -25,14 +25,14 @@ void setup() {
 void loop() {
     int c;
     if (color[current_vanishing] == 0)
-      current_vanishing++;
-
+      ++current_vanishing %= 3;
     current_appearing = (current_vanishing + 1) % 3;
+    
     color[current_appearing] += 5;
     color[current_vanishing] -= 5;
 
     for (int i = 0; i < bs.shelfRows; i++)
-        for (int j = 0; j < bs.shelfCols; i++)
+        for (int j = 0; j < bs.shelfCols; j++)
             bs.setShelfColor(i, j, bs.Color(color));
     bs.show();
     delay(50);

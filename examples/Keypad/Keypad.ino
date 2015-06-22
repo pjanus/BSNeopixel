@@ -8,7 +8,7 @@ BSNeopixel bs = BSNeopixel();
 const int EFFECTS_NUM = 4;
 Effect *effects[EFFECTS_NUM];
 
-const byte rows = 4; //four rows
+const byte rows = 5; //four rows
 const byte cols = 3; //three columns
 char keys[rows][cols] = {
     {'1', '2', '3'},
@@ -33,6 +33,7 @@ void setup() {
     effects[1] = new Rainbow(bs);
     effects[2] = new Animation(bs);
     effects[3] = new Dots(bs);
+    effects[4] = new Snake(bs);
 }
 
 void loop() {

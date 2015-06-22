@@ -98,18 +98,21 @@ void Animation::step(uint8_t data[]) {
 
 void Dots::step(uint8_t data[])
 {
+    if (!data[5])
+        return;
+    bs.colorWipe(bgColor);
     int number_of_dots = countDotsNumber(data);
     for (int i=0; i < number_of_dots; i++) {
         setRandomDot();
     }
-    bs.show(); delay(500);
+    bs.show();
 }
 
 void Dots::setRandomDot()
 {
     int col = random(bs.shelfCols);
     int row = random(bs.shelfRows);
-    bs.setShelfColor(row, col, RED);
+    bs.setShelfColor(row, col, fgColor);
 }
 
 int Dots::countDotsNumber(uint8_t data[])
@@ -121,6 +124,9 @@ int Dots::countDotsNumber(uint8_t data[])
     }
     return sum / (39 * bs.shelfCols / MAX_DOTS) + 1;
 }
+
+
+/* snake */
 
 void Snake::reset()
 {
@@ -134,6 +140,9 @@ void Snake::reset()
 
 void Snake::step(uint8_t data[])
 {
+    if (!data[5])
+        return;
+
     bs.colorWipe(GREEN);
     bs.setShelfColor(snake_row[0], snake_col[0], bs.Color(255,0,0));
     for (int i = 1; i < max_len; i++) {

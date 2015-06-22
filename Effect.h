@@ -82,10 +82,13 @@ private:
 	static const uint32_t MAX_DOTS = 5;
 	void setRandomDot();
 	int countDotsNumber(uint8_t data[]);
+	uint32_t fgColor, bgColor;
 public:
 	Dots(BSNeopixel &bs)
 	: Effect(bs)
 	{
+		bgColor = BLUE;
+		fgColor = RED;
     	randomSeed(analogRead(0));
 	}
 	void step(uint8_t data[]);

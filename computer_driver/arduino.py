@@ -14,8 +14,10 @@ def send(ser):
     message[5] = chr(beat)
     message[6] = chr(power)
 
+    message = ''.join(message)
+
     print repr(message), data, beat, power
-    ser.write(''.join(message))
+    ser.write(message)
 
 
 if __name__ == "__main__":

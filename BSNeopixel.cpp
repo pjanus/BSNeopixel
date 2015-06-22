@@ -5,7 +5,7 @@
 const uint8_t
   BSNeopixel::shelfRows = 5,
   BSNeopixel::shelfCols = 5,
-  BSNeopixel::dataBytes = 6;
+  BSNeopixel::dataBytes = 8;
 const uint16_t BSNeopixel::shelfLEDs = 8;
 
 

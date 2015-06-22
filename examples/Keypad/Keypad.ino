@@ -107,7 +107,7 @@ void dotsLoop() {
         for (int i=0; i < number_of_dots; i++) {
             setRandomDot(&bs);
         }
-        bs.show(); delay(500);
+        bs.show();
     }
 }
 

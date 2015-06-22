@@ -5,6 +5,7 @@ from recorder import *
 DIM_X = 5
 DIM_Y = 40
 MAX_Y = 30000.0
+MAX_POWER = 100000.0
 HISTORY = 43
 DECAY_FACTOR = 0.9
 NOISE_LEVEL = 10000
@@ -78,8 +79,9 @@ class Visualisation(object):
 
         print self.max
 
+        power = min(255, int(sum(ys) / MAX_POWER * 255))
         ys = [min(int(round(i)), DIM_Y - 1) for i in ys / self.max * DIM_Y]
-        return ys, beat
+        return ys, beat, power
 
 
 v = Visualisation(SwhRecorder())

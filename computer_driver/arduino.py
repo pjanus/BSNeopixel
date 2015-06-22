@@ -7,11 +7,15 @@ SERIAL_PORT = '/dev/cu.usbmodem1411'
 
 
 def send(ser):
-    data, beat = v.get()
-    message = ''.join(chr(i) for i in data + [int(beat)])
+    data, beat, power = v.get()
 
-    print repr(message), data, beat
-    ser.write(message)
+    message = [chr(0)] * 8
+    message[:5] = [chr(i) for i in data]
+    message[5] = chr(beat)
+    message[6] = chr(power)
+
+    print repr(message), data, beat, power
+    ser.write(''.join(message))
 
 
 if __name__ == "__main__":

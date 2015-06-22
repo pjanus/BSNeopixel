@@ -28,7 +28,7 @@ class BSNeopixel
   public:
     Adafruit_NeoPixel** strips;
     Adafruit_NeoPixel* strip;
-    static const uint16_t shelfLEDs;
+    static const uint16_t shelfLEDs = 8;
     static const uint8_t
         shelfRows = 5,
         shelfCols = 5,

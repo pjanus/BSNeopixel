@@ -71,6 +71,13 @@ void BSNeopixel::setBrightness(uint8_t level)
 	}
 }
 
+void BSNeopixel::colorWipe(uint32_t color)
+{
+	for (int i = 0; i < shelfRows; i++) {
+		setRowHeight(i, shelfCols * shelfLEDs, color);
+	}
+}
+
 void BSNeopixel::clear()
 {
 	for (int i = 0; i < shelfRows; i++) {

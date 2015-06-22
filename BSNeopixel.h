@@ -16,6 +16,7 @@ class BSNeopixel
     void setPixelColor(uint8_t r, uint8_t c, uint32_t color);
     void setRowHeight(uint8_t r, uint8_t h, uint32_t color);
     void setBrightness(uint8_t);
+    void colorWipe(uint32_t color);
     void clear();
 
     uint8_t getRows() { return shelfRows; }

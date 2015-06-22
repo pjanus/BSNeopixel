@@ -5,7 +5,7 @@
 #include <Keypad.h>
 
 BSNeopixel bs = BSNeopixel();
-const int EFFECTS_NUM = 3;
+const int EFFECTS_NUM = 4;
 Effect *effects[EFFECTS_NUM];
 
 const byte rows = 4; //four rows
@@ -32,6 +32,7 @@ void setup() {
     effects[0] = new Equalizer(bs);
     effects[1] = new Rainbow(bs);
     effects[2] = new Animation(bs);
+    effects[3] = new Dots(bs);
 }
 
 void loop() {

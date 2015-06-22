@@ -2,33 +2,17 @@
 
 #include <avr/power.h>
 
+#include "Animation.h"
+
 BSNeopixel bs = BSNeopixel();
 uint32_t BACKGROUND_COLOR, ANIMATION_COLOR;
 
-const int ANIMATION_STEPS = 2;
 int animation_setep = 0;
+int number_of_steps;
 
 byte data[BSNeopixel::dataBytes];
 
-const uint8_t ANIMATION[ANIMATION_STEPS][BSNeopixel::shelfRows][BSNeopixel::shelfCols] = 
-{
-    {
-        {0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0},
-        {0, 0, 1, 1, 1},
-        {0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0}
-    },
-    {
-        {0, 0, 1, 0, 0},
-        {0, 0, 1, 0, 0},
-        {0, 0, 1, 0, 0},
-        {0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0}
-    }
-};
-
-void setup() {
+void setup() {  
     bs.begin();
     bs.show();
     Serial.begin(9600);
@@ -49,11 +33,13 @@ void loop() {
 
     if (data[5])
         for (int i = 0; i < bs.shelfRows; i++)
-            for (int j = 0; j < bs.shelfCols; j++)
-                if (ANIMATION[animation_setep][i][j])
+            for (int j = 0; j < bs.shelfCols; j++) {
+                bs.setShelfColor(i, j, BACKGROUND_COLOR);
+                if ((ANIMATION[animation_setep][j] >> (BSNeopixel::shelfRows - i - 1)) & 1)
                     bs.setShelfColor(i, j, ANIMATION_COLOR);
-    ++animation_setep %= ANIMATION_STEPS;
+            }
+    ++animation_setep %= number_of_steps;
     
     bs.show();
-    delay(50);
+    delay(1000);
 }

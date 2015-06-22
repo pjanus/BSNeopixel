@@ -84,3 +84,11 @@ uint32_t BSNeopixel::Color(uint8_t r, uint8_t g, uint8_t b)
 {
 	return Adafruit_NeoPixel::Color(r,g,b);
 }
+
+uint32_t BSNeopixel::Color(uint8_t rgb[])
+{
+	uint8_t r = rgb[0];
+	uint8_t g = rgb[1];
+	uint8_t b = rgb[2];
+	return Adafruit_NeoPixel::Color(r,g,b);
+}

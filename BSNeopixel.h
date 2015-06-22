@@ -22,6 +22,8 @@ class BSNeopixel
 
     static uint32_t
       Color(uint8_t r, uint8_t g, uint8_t b);
+    static uint32_t
+      Color(uint8_t rgb[]);
   public:
     Adafruit_NeoPixel** strips;
     Adafruit_NeoPixel* strip;

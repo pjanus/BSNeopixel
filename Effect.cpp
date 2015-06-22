@@ -145,9 +145,19 @@ void Snake::step(uint8_t data[])
             dy = random(2)*2 - 1;
         }
 
-        uint8_t align = bs.shelfRows;
-        snake_row[0] = (snake_row[1] + dx + align) % align;
-        snake_col[0] = (snake_col[1] + dy + align) % align;
+        // uint8_t align = bs.shelfRows;
+        // snake_row[0] = (snake_row[1] + dx + align) % align;
+        // snake_col[0] = (snake_col[1] + dy + align) % align;
+        snake_row[0] = snake_row[1] + dx;
+        if (snake_row[0] < 0 || snake_row[0] > 4) {
+            collision = true;
+            continue;
+        }
+        snake_col[0] = snake_col[1] + dy;
+        if (snake_col[0] < 0 || snake_col[0] > 4) {
+            collision = true;
+            continue;        
+        }
 
         for (int i = 1; i < max_len; i++) {
             if (snake_row[i] != -1) {

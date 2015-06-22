@@ -1,6 +1,10 @@
 #include "Effect.h"
 #include "Animation.h"
 
+
+
+/* equalizer */
+
 void Equalizer::step(uint8_t data[])
 {
     for (int i = 0; i < 5; i++) {
@@ -33,6 +37,9 @@ void Equalizer::gradient(int row, int i)
     uint8_t green = map(i, 0, 39, 128, 0);
     bs.setPixelColor(row, i, bs.Color(red, green, 0));
 }
+
+
+/* rainbow */
 
 void Rainbow::step(uint8_t data[]) {
     uint16_t time = millis() >> 2;
@@ -70,6 +77,9 @@ uint32_t Rainbow::hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
     return bs.Color(r, g, b);
 }
 
+
+/* animation */
+
 void Animation::step(uint8_t data[]) {
     if (data[5])
         for (int i = 0; i < bs.shelfRows; i++)
@@ -81,4 +91,33 @@ void Animation::step(uint8_t data[]) {
     ++animation_step %= NUMBER_OF_STEPS;
 
     bs.show();
+}
+
+
+/* dots */
+
+void Dots::step(uint8_t data[])
+{
+    int number_of_dots = countDotsNumber(data);
+    for (int i=0; i < number_of_dots; i++) {
+        setRandomDot();
+    }
+    bs.show(); delay(500);
+}
+
+void Dots::setRandomDot()
+{
+    int col = random(bs.shelfCols);
+    int row = random(bs.shelfRows);
+    bs.setShelfColor(row, col, RED);
+}
+
+int Dots::countDotsNumber(uint8_t data[])
+{
+    int sum = 0;
+    for (int i=0; i < 5 ; i++)
+    {
+        sum += data[i];
+    }
+    return sum / (39 * bs.shelfCols / MAX_DOTS) + 1;
 }

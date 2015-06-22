@@ -1,5 +1,6 @@
 #include "BSNeopixel.h"
 
+
 uint8_t BSNeopixel::pins[5] = {5, 6, 7, 8, 9};
 
 BSNeopixel::BSNeopixel(uint8_t* p)

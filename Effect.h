@@ -6,7 +6,6 @@
 class Effect
 {
 protected:
-	uint32_t RED, GREEN, BLUE, BLACK, YELLOW;
 	BSNeopixel bs;
 public:
 	virtual void step(uint8_t data[]) = 0;
@@ -21,7 +20,12 @@ public:
 	    
 	}
 	virtual ~Effect () {}
+
+	uint32_t RED, GREEN, BLUE, BLACK, YELLOW;
 };
+
+
+/* equalizer */
 
 class Equalizer: public Effect
 {
@@ -44,6 +48,9 @@ public:
 	void gradient(int row, int i);
 };
 
+
+/* rainbow */
+
 class Rainbow: public Effect
 {
     public:
@@ -55,6 +62,9 @@ class Rainbow: public Effect
     uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
 };
 
+
+/* animation */
+
 class Animation: public Effect
 {
     public:
@@ -65,6 +75,24 @@ class Animation: public Effect
     private:
     uint32_t animation_step;
     uint32_t background_color, animation_color;
+};
+
+
+/* dots */
+
+class Dots: public Effect
+{
+private:
+	static const uint32_t MAX_DOTS = 5;
+	void setRandomDot();
+	int countDotsNumber(uint8_t data[]);
+public:
+	Dots(BSNeopixel &bs)
+	: Effect(bs)
+	{
+    	randomSeed(analogRead(0));
+	}
+	void step(uint8_t data[]);
 };
 
 #endif

@@ -68,12 +68,11 @@ class Rainbow: public Effect
 class Animation: public Effect
 {
     public:
-    Animation(BSNeopixel& bs) : Effect(bs), animation_step(0), background_color(Effect::GREEN), animation_color(Effect::RED) {}
+    Animation(BSNeopixel& bs) : Effect(bs), background_color(Effect::GREEN), animation_color(Effect::RED) {}
 
     void step(uint8_t data[]);
 
     private:
-    uint32_t animation_step;
     uint32_t background_color, animation_color;
 };
 

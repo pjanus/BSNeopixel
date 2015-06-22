@@ -81,14 +81,14 @@ uint32_t Rainbow::hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
 /* animation */
 
 void Animation::step(uint8_t data[]) {
-    if (data[5])
-        for (int i = 0; i < bs.shelfRows; i++)
-            for (int j = 0; j < bs.shelfCols; j++) {
-                bs.setShelfColor(i, j, background_color);
-                if ((ANIMATION[animation_step][j] >> (BSNeopixel::shelfRows - i - 1)) & 1)
-                    bs.setShelfColor(i, j, animation_color);
-            }
-    ++animation_step %= NUMBER_OF_STEPS;
+    uint32_t animation_step = (millis() / 500) % NUMBER_OF_STEPS;
+
+    for (int i = 0; i < bs.shelfRows; i++)
+        for (int j = 0; j < bs.shelfCols; j++) {
+            bs.setShelfColor(i, j, background_color);
+            if ((ANIMATION[animation_step][j] >> (BSNeopixel::shelfRows - i - 1)) & 1)
+                bs.setShelfColor(i, j, animation_color);
+        }
 
     bs.show();
 }

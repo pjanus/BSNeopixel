@@ -27,7 +27,7 @@ class BSNeopixel
     const uint8_t
       shelfRows = 5,
       shelfCols = 5;
-    uint8_t pins[5] = {6, 7, 8, 9, 10};
+    uint8_t pins[5] = {5, 6, 7, 8, 9};
     
 };
 

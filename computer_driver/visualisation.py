@@ -10,6 +10,7 @@ HISTORY = 43
 DECAY_FACTOR = 0.9
 NOISE_LEVEL = 10000
 PERCENTILE = 95
+BEAT_LIMIT = 5
 
 def downsample(data, mult):
     """Given 1D data, return the binned average."""
@@ -31,6 +32,8 @@ class Visualisation(object):
         self.values = numpy.zeros(HISTORY)
         self.values_index = 0
 
+        self.last_beat = 0
+
         sr.setup()
         sr.continuousStart()
 
@@ -45,7 +48,7 @@ class Visualisation(object):
         local_energy_average = self.local_energy.mean()
         local_energy_variance = self.local_energy.var()
 
-        beat_sensibility = (-0.0025714 * local_energy_variance) + 1.65142857
+        beat_sensibility = (-0.0025714 * local_energy_variance) + 1.05142857
 
 
         print local_energy_average, local_energy_variance, instant_energy, beat_sensibility, beat_sensibility * local_energy_average
@@ -72,6 +75,14 @@ class Visualisation(object):
         audio = self.sr.audio.flatten()
         xs, ys = self.sr.fft(audio)
         beat = self.detect_beat(ys)
+
+        if self.last_beat > 0:
+            self.last_beat -= 1
+
+        if beat and self.last_beat > 0:
+            beat = False
+        else:
+            self.last_beat = BEAT_LIMIT
 
         ys = downsample(ys, DIM_X)
         self.update_max(ys)

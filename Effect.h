@@ -101,17 +101,13 @@ private:
 
 	void nextShelf(int8_t snake[]);
 	void shift();
+	void reset();
 public:
 	Snake(BSNeopixel &bs)
 	: Effect(bs)
 	{
 		randomSeed(analogRead(0));
-		snake_row[0] = 2;
-		snake_col[0] = 2;
-		for (int i = 1; i < max_len; i++) {
-			snake_row[i] = -1;
-			snake_row[i] = -1;
-		}
+		reset();
 	}
 
 	void step(uint8_t data[]);

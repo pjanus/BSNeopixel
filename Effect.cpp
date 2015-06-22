@@ -122,6 +122,16 @@ int Dots::countDotsNumber(uint8_t data[])
     return sum / (39 * bs.shelfCols / MAX_DOTS) + 1;
 }
 
+void Snake::reset()
+{
+    snake_row[0] = 2;
+    snake_col[0] = 2;
+    for (int i = 1; i < max_len; i++) {
+        snake_row[i] = -1;
+        snake_row[i] = -1;
+    }
+}
+
 void Snake::step(uint8_t data[])
 {
     bs.colorWipe(GREEN);
@@ -136,7 +146,14 @@ void Snake::step(uint8_t data[])
     shift();
 
     bool collision = true;
+    int step = 0;
+    const int MAX_STEPS = 20;
     while(collision) {
+        if (step++ >= MAX_STEPS) {
+            reset();
+            break;
+        }
+
         collision = false;
         int dx = 0, dy = 0;
         if (random(2)==0) {

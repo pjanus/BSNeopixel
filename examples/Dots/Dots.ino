@@ -52,7 +52,7 @@ void loop() {
 
     if (rows[5]) {
         int number_of_dots = countDotsNumber(rows);
-        for (int i=0; i < rows[5]; i++) {
+        for (int i=0; i < rows[number_of_dots]; i++) {
             setRandomDot(&bs);
         }
         bs.show(); delay(500);

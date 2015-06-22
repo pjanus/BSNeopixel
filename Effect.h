@@ -44,4 +44,15 @@ public:
 	void gradient(int row, int i);
 };
 
+class Rainbow: public Effect
+{
+    public:
+    Rainbow(BSNeopixel& bs) : Effect(bs) {}
+
+    void step(uint8_t data[]);
+    private:
+
+    uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
+};
+
 #endif

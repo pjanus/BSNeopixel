@@ -33,7 +33,7 @@ void BSNeopixel::begin(void)
 
 void BSNeopixel::show(void)
 {
-        Serial.println("Show");
+    Serial.println("Show");
 	for (int i = 0; i < shelfRows; i++) {
                 Serial.println(i);
 		strips[i]->show();
@@ -50,6 +50,11 @@ void BSNeopixel::setShelfColor(uint8_t row, uint8_t col, uint32_t color)
                 Serial.println(row);
 		strips[row]->setPixelColor(n, color);
 	}
+}
+
+void BSNeopixel::setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint32_t color)
+{
+	strips[row]->setPixelColor(c * shelfLEDs + p, color);
 }
 
 void BSNeopixel::setBrightness(uint8_t level)

@@ -12,7 +12,7 @@ class BSNeopixel
     void begin(void);
     void show(void); 
     void setShelfColor(uint8_t row, uint8_t col, uint32_t color);
-    void setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint8_t color);
+    void setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint32_t color);
     void setBrightness(uint8_t);
     void clear();
 

@@ -54,7 +54,7 @@ void BSNeopixel::setShelfColor(uint8_t row, uint8_t col, uint32_t color)
 
 void BSNeopixel::setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint32_t color)
 {
-	strips[row]->setPixelColor(c * shelfLEDs + p, color);
+	strips[r]->setPixelColor(c * shelfLEDs + p, color);
 }
 
 void BSNeopixel::setBrightness(uint8_t level)

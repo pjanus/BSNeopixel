@@ -47,6 +47,12 @@ void BSNeopixel::setShelfColor(uint8_t row, uint8_t col, uint32_t color)
 	}
 }
 
+uint32_t BSNeopixel::getShelfColor(uint8_t row, uint8_t col)
+{
+	uint16_t firstLED = col * shelfLEDs;
+    return strips[row]->getPixelColor(firstLED);
+}
+
 void BSNeopixel::setPixelColor(uint8_t r, uint8_t c, uint8_t p, uint32_t color)
 {
 	strips[r]->setPixelColor(c * shelfLEDs + p, color);

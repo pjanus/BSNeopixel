@@ -7,11 +7,16 @@ class Effect
 {
 protected:
 	BSNeopixel bs;
+    int rows;
+    int cols;
 public:
 	virtual void step(uint8_t data[]) = 0;
 	Effect (BSNeopixel &bs)
 	: bs(bs)
 	{
+        rows = bs.getRows();
+        cols = bs.getCols();
+
 	    RED = bs.Color(128,0,0);
 	    GREEN = bs.Color(0,128,0);
 	    BLUE = bs.Color(0,0,128);
@@ -113,6 +118,33 @@ public:
 		reset();
 	}
 
+	void step(uint8_t data[]);
+};
+
+
+class Blur : public Effect
+{
+private:
+    struct BlurState {
+        bool rising;
+        uint32_t min_brightness;
+        uint32_t max_brightness;
+    };
+	struct BlurState bs_state[5][5];
+public:
+	Blur(BSNeopixel &bs)
+	: Effect(bs)
+	{
+		randomSeed(analogRead(0));
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                reset_shelf(i, j);
+            }
+        }
+    }
+
+    void reset_shelf(int i, int j);
 	void step(uint8_t data[]);
 };
 #endif

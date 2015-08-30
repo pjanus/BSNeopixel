@@ -212,3 +212,48 @@ void Snake::shift()
         snake_col[i] = snake_col[i-1];
     }
 }
+
+
+void Blur::reset_shelf(int i, int j)
+{
+    struct BlurState * shelf_state = &bs_state[i][j];
+
+    shelf_state->rising = 1;
+    uint32_t min_br = random(200);
+    uint32_t max_br = random(min_br + 10, 256);
+    min_br = 0;
+    max_br = 50;
+    uint32_t color = bs.Color(min_br, 0, 0);
+
+    shelf_state->min_brightness = min_br;
+    shelf_state->max_brightness = max_br;
+    bs.setShelfColor(i, j, color);
+}
+
+
+void Blur::step(uint8_t data[])
+{
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            struct BlurState * shelf_state = &bs_state[i][j];
+            uint32_t color = bs.getShelfColor(i, j);
+
+            bool rising = shelf_state->rising;
+            uint32_t min_br = shelf_state->min_brightness;
+            uint32_t max_br = shelf_state->max_brightness;
+            uint8_t red = (uint8_t)(color >> 16);
+            if (rising &&  red >= max_br) {
+                shelf_state->rising = 0;
+                shelf_state->min_brightness = random(0, max_br);
+            } else if (!rising && red <= min_br) {
+                shelf_state->rising = 1;
+                shelf_state->max_brightness = random(min_br, 255);
+            } else {
+                red += (rising ? 1 : -1);
+                color = bs.Color(red, 0 , 0);
+                bs.setShelfColor(i, j, color);
+            }
+        }
+    }
+    bs.show();
+}

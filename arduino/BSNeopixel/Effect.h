@@ -7,20 +7,20 @@ class Effect
 {
 protected:
 	BSNeopixel bs;
-  int rows;
-  int cols;
-  int step_duration;
-  unsigned int last_step_time;
-  uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
-  // set random color to every shelf
-  uint32_t randomize();
-  // detect if next step should be invoked
-  //(step_duration elapsed from last succesfull invoke of step function)
-  bool make_step();
+	int rows;
+	int cols;
+	int step_duration;
+	uint32_t last_step_time;
+	uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
+	// set random color to every shelf
+	uint32_t randomize();
+	// detect if next step should be invoked
+	//(step_duration elapsed from last succesfull invoke of step function)
+	bool make_step();
 public:
 	virtual void step(uint8_t data[]) = 0;
-	Effect (BSNeopixel &bs, int fps = 2)
-	: bs(bs), step_duration(1000/fps)
+	Effect (BSNeopixel &bs, float fps = 2)
+	: bs(bs), step_duration(1000.0/fps)
 	{
 	    rows = bs.getRows();
 	    cols = bs.getCols();
@@ -66,11 +66,11 @@ public:
 class Rainbow: public Effect
 {
     public:
-    Rainbow(BSNeopixel& bs) : Effect(bs) {}
+    Rainbow(BSNeopixel& bs) : Effect(bs, fps) {}
 
     void step(uint8_t data[]);
     private:
-
+    const int fps = 60;
 };
 
 
@@ -79,7 +79,8 @@ class Rainbow: public Effect
 class Animation: public Effect
 {
     public:
-    Animation(BSNeopixel& bs) : Effect(bs), background_color(Effect::GREEN), animation_color(Effect::RED) {}
+    Animation(BSNeopixel& bs, float fps=2)
+    : Effect(bs, fps), background_color(Effect::GREEN), animation_color(Effect::RED) {}
 
     void step(uint8_t data[]);
 
@@ -173,4 +174,5 @@ public:
 
 	void step(uint8_t data[]);
 };
+
 #endif

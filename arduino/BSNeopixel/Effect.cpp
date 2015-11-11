@@ -84,6 +84,8 @@ void Equalizer::gradient(int row, int i)
 /* rainbow */
 
 void Rainbow::step(uint8_t data[]) {
+    if (!make_step())
+        return;
     uint16_t time = millis() >> 2;
     uint8_t box = 0;
 
@@ -104,7 +106,10 @@ void Rainbow::step(uint8_t data[]) {
 /* animation */
 
 void Animation::step(uint8_t data[]) {
-    uint32_t animation_step = (millis() / 500) % NUMBER_OF_STEPS;
+    if (!make_step())
+        return;
+    static int animation_step = 0;
+    ++animation_step %= NUMBER_OF_STEPS;
 
     for (int i = 0; i < bs.shelfRows; i++)
         for (int j = 0; j < bs.shelfCols; j++) {

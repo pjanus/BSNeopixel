@@ -9,21 +9,29 @@ protected:
 	BSNeopixel bs;
   int rows;
   int cols;
+  int step_duration;
+  unsigned int last_step_time;
   uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
+  // set random color to every shelf
   uint32_t randomize();
+  // detect if next step should be invoked
+  //(step_duration elapsed from last succesfull invoke of step function)
+  bool make_step();
 public:
 	virtual void step(uint8_t data[]) = 0;
-	Effect (BSNeopixel &bs)
-	: bs(bs)
+	Effect (BSNeopixel &bs, int fps = 2)
+	: bs(bs), step_duration(1000/fps)
 	{
-        rows = bs.getRows();
-        cols = bs.getCols();
+	    rows = bs.getRows();
+	    cols = bs.getCols();
 
 	    RED = bs.Color(128,0,0);
 	    GREEN = bs.Color(0,128,0);
 	    BLUE = bs.Color(0,0,128);
 	    BLACK = bs.Color(0,0,0);
-	    YELLOW = bs.Color(128, 128, 0);    
+	    YELLOW = bs.Color(128, 128, 0);
+
+	    last_step_time = -1;
 	}
 	virtual ~Effect () {}
 
@@ -152,9 +160,12 @@ public:
 
 class SpaceConsole : public Effect
 {
+private:
+  int colors;
+  int change_density;
 public:
-	SpaceConsole(BSNeopixel &bs)
-	: Effect(bs)
+	SpaceConsole(BSNeopixel &bs, int fps = 50, int colors = 25, int change_density = 5)
+	: Effect(bs, fps), colors(colors), change_density(change_density)
 	{
 		randomSeed(analogRead(0));
     randomize();

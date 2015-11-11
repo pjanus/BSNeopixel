@@ -35,6 +35,15 @@ uint32_t Effect::randomize()
   bs.show();
 }
 
+inline bool Effect::make_step()
+{
+    if (millis() - last_step_time >= step_duration) {
+        last_step_time = millis();
+        return true;
+    }
+    return false;
+}
+
 
 /* equalizer */
 
@@ -275,15 +284,17 @@ void Blur::step(uint8_t data[])
 
 void SpaceConsole::step(uint8_t data[])
 {
-  uint32_t h, color;
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      if (!(random(200) % 5)) {
-        h = random(255);
-        color = hsvToRgb(h, 250, 205);
-        bs.setShelfColor(i, j, color);
-      }
+    if (!make_step())
+        return;
+    uint32_t h, color;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (!(random() % this->change_density)) {
+                h = random(this->colors) * (250 / this->colors);
+                color = hsvToRgb(h, 250, 205);
+                bs.setShelfColor(i, j, color);
+          }
+        }
     }
-  }
-  bs.show();
+    bs.show();
 }

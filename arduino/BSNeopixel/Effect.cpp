@@ -2,6 +2,39 @@
 #include "Animation.h"
 
 
+uint32_t Effect::hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
+{
+    uint8_t f = (h % 60) * 255 / 60;
+    uint8_t p = (255 - s) * (uint16_t)v / 255;
+    uint8_t q = (255 - f * (uint16_t)s / 255) * (uint16_t)v / 255;
+    uint8_t t = (255 - (255 - f) * (uint16_t)s / 255) * (uint16_t)v / 255;
+    uint8_t r = 0, g = 0, b = 0;
+    switch((h / 60) % 6){
+        case 0: r = v; g = t; b = p; break;
+        case 1: r = q; g = v; b = p; break;
+        case 2: r = p; g = v; b = t; break;
+        case 3: r = p; g = q; b = v; break;
+        case 4: r = t; g = p; b = v; break;
+        case 5: r = v; g = p; b = q; break;
+    }
+    return bs.Color(r, g, b);
+}
+
+uint32_t Effect::randomize()
+{
+  uint32_t h, color;
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      if (!(random(200) % 5)) {
+        h = random(255);
+        color = hsvToRgb(h, 250, 205);
+        bs.setShelfColor(i, j, color);
+      }
+    }
+  }
+  bs.show();
+}
+
 
 /* equalizer */
 
@@ -56,25 +89,6 @@ void Rainbow::step(uint8_t data[]) {
     }
 
     bs.show();
-}
-
-
-uint32_t Rainbow::hsvToRgb(uint16_t h, uint8_t s, uint8_t v)
-{
-    uint8_t f = (h % 60) * 255 / 60;
-    uint8_t p = (255 - s) * (uint16_t)v / 255;
-    uint8_t q = (255 - f * (uint16_t)s / 255) * (uint16_t)v / 255;
-    uint8_t t = (255 - (255 - f) * (uint16_t)s / 255) * (uint16_t)v / 255;
-    uint8_t r = 0, g = 0, b = 0;
-    switch((h / 60) % 6){
-        case 0: r = v; g = t; b = p; break;
-        case 1: r = q; g = v; b = p; break;
-        case 2: r = p; g = v; b = t; break;
-        case 3: r = p; g = q; b = v; break;
-        case 4: r = t; g = p; b = v; break;
-        case 5: r = v; g = p; b = q; break;
-    }
-    return bs.Color(r, g, b);
 }
 
 
@@ -256,4 +270,20 @@ void Blur::step(uint8_t data[])
         }
     }
     bs.show();
+}
+
+
+void SpaceConsole::step(uint8_t data[])
+{
+  uint32_t h, color;
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      if (!(random(200) % 5)) {
+        h = random(255);
+        color = hsvToRgb(h, 250, 205);
+        bs.setShelfColor(i, j, color);
+      }
+    }
+  }
+  bs.show();
 }

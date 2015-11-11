@@ -7,8 +7,10 @@ class Effect
 {
 protected:
 	BSNeopixel bs;
-    int rows;
-    int cols;
+  int rows;
+  int cols;
+  uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
+  uint32_t randomize();
 public:
 	virtual void step(uint8_t data[]) = 0;
 	Effect (BSNeopixel &bs)
@@ -61,7 +63,6 @@ class Rainbow: public Effect
     void step(uint8_t data[]);
     private:
 
-    uint32_t hsvToRgb(uint16_t h, uint8_t s, uint8_t v);
 };
 
 
@@ -137,14 +138,28 @@ public:
 	{
 		randomSeed(analogRead(0));
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                reset_shelf(i, j);
-            }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            reset_shelf(i, j);
         }
     }
+  }
 
-    void reset_shelf(int i, int j);
+  void reset_shelf(int i, int j);
+	void step(uint8_t data[]);
+};
+
+
+class SpaceConsole : public Effect
+{
+public:
+	SpaceConsole(BSNeopixel &bs)
+	: Effect(bs)
+	{
+		randomSeed(analogRead(0));
+    randomize();
+  }
+
 	void step(uint8_t data[]);
 };
 #endif

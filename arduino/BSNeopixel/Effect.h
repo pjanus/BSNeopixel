@@ -79,7 +79,7 @@ class Rainbow: public Effect
 class Animation: public Effect
 {
     public:
-    Animation(BSNeopixel& bs, float fps=2)
+    Animation(BSNeopixel& bs, float fps=1.66)
     : Effect(bs, fps), background_color(Effect::GREEN), animation_color(Effect::RED) {}
 
     void step(uint8_t data[]);
@@ -174,5 +174,8 @@ public:
 
 	void step(uint8_t data[]);
 };
+
+/* returns array of effects with number of them */
+int get_all_effects(BSNeopixel &bs, Effect*** effects);
 
 #endif

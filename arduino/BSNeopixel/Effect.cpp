@@ -303,3 +303,16 @@ void SpaceConsole::step(uint8_t data[])
     }
     bs.show();
 }
+
+
+int get_all_effects(BSNeopixel &bs, Effect*** effects)
+{
+    const int number_of_effects = 5;
+    *effects = new Effect*[number_of_effects];
+    (*effects)[0] = new Rainbow(bs);
+    (*effects)[1] = new Animation(bs);
+    (*effects)[2] = new Dots(bs);
+    (*effects)[3] = new Blur(bs);
+    (*effects)[4] = new SpaceConsole(bs);
+    return number_of_effects;
+}

@@ -137,24 +137,32 @@ class Blur : public Effect
 private:
     struct BlurState {
         bool rising;
-        uint32_t min_brightness;
-        uint32_t max_brightness;
+        uint8_t min_brightness;
+        uint8_t max_brightness;
+        uint8_t current_v_lvl;
     };
 	struct BlurState bs_state[5][5];
+	uint8_t h_lvl, s_lvl;
+	uint8_t step_size = 1;
 public:
-	Blur(BSNeopixel &bs)
-	: Effect(bs)
+	Blur(BSNeopixel &bs, int fps=50, uint8_t h_lvl=100, uint8_t s_lvl=255)
+	: Effect(bs, min(fps, 25)), h_lvl(h_lvl), s_lvl(s_lvl)
 	{
 		randomSeed(analogRead(0));
 
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            reset_shelf(i, j);
-        }
-    }
-  }
+	    for (int i = 0; i < rows; i++) {
+	        for (int j = 0; j < cols; j++) {
+	            reset_shelf(i, j);
+	        }
+	    }
 
-  void reset_shelf(int i, int j);
+	    /* when fps < 25, then fps means how many times brightness is increased by 1
+	    when fps > 25 then maximum refresh rate is still 25, but brightness is increased
+	    by larger number */
+	    step_size = max(fps / 25, 1);
+  	}
+
+	void reset_shelf(int i, int j);
 	void step(uint8_t data[]);
 };
 
@@ -169,8 +177,8 @@ public:
 	: Effect(bs, fps), colors(colors), change_density(change_density)
 	{
 		randomSeed(analogRead(0));
-    randomize();
-  }
+		randomize();
+	}
 
 	void step(uint8_t data[]);
 };

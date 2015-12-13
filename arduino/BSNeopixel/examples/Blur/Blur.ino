@@ -11,11 +11,11 @@ void setup() {
     bs.begin();
     bs.show();
     Serial.begin(9600);
-    effect = new Blur(bs);
+    effect = new Blur(bs, 10, 0);
 }
 
 void loop() {
     byte data[bs.dataBytes];
     effect->step(data);
-    delay(40);
+    delay(30);
 }

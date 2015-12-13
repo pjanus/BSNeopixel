@@ -246,41 +246,46 @@ void Blur::reset_shelf(int i, int j)
 {
     struct BlurState * shelf_state = &bs_state[i][j];
 
-    shelf_state->rising = 1;
-    uint32_t min_br = random(200);
-    uint32_t max_br = random(min_br + 10, 256);
-    min_br = 0;
-    max_br = 50;
-    uint32_t color = bs.Color(min_br, 0, 0);
+    shelf_state->rising = 0;
+    uint8_t min_br = 0;
+    uint8_t max_br = random(10, 100);
+    uint32_t color = hsvToRgb(h_lvl, s_lvl, min_br);
 
     shelf_state->min_brightness = min_br;
     shelf_state->max_brightness = max_br;
+    shelf_state->current_v_lvl = min_br;
     bs.setShelfColor(i, j, color);
 }
 
 
 void Blur::step(uint8_t data[])
 {
+    if (!make_step())
+        return;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             struct BlurState * shelf_state = &bs_state[i][j];
-            uint32_t color = bs.getShelfColor(i, j);
 
             bool rising = shelf_state->rising;
-            uint32_t min_br = shelf_state->min_brightness;
-            uint32_t max_br = shelf_state->max_brightness;
-            uint8_t red = (uint8_t)(color >> 16);
-            if (rising &&  red >= max_br) {
-                shelf_state->rising = 0;
-                shelf_state->min_brightness = random(0, max_br);
-            } else if (!rising && red <= min_br) {
-                shelf_state->rising = 1;
-                shelf_state->max_brightness = random(min_br, 255);
-            } else {
-                red += (rising ? 1 : -1);
-                color = bs.Color(red, 0 , 0);
-                bs.setShelfColor(i, j, color);
+            uint8_t min_br = shelf_state->min_brightness;
+            uint8_t max_br = shelf_state->max_brightness;
+            uint8_t color_intensity = shelf_state->current_v_lvl;
+            if (rising && color_intensity >= max_br - step_size) {
+                /* max color value for cell rised, stop rising
+                and chose min value for the cell to fall */
+                shelf_state->rising = rising = 0;
+                shelf_state->min_brightness = random(0, max_br - step_size);
+            } else if (!rising && color_intensity <= min_br + step_size) {
+                /* min color value for cell rised, start rising
+                and chose max value for the cell to rise */
+                shelf_state->rising = rising = 1;
+                shelf_state->max_brightness = random(min_br + step_size, 255);
             }
+            /* continue rising/falling choosen color */
+            color_intensity += (shelf_state->rising ? 1 : -1) * step_size;
+            uint32_t color = hsvToRgb(h_lvl, s_lvl, color_intensity);
+            shelf_state->current_v_lvl = color_intensity;
+            bs.setShelfColor(i, j, color);
         }
     }
     bs.show();

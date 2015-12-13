@@ -142,10 +142,11 @@ private:
         uint8_t current_v_lvl;
     };
 	struct BlurState bs_state[5][5];
-	uint8_t h_lvl, s_lvl;
+	uint16_t h_lvl;
+	uint8_t s_lvl;
 	uint8_t step_size = 1;
 public:
-	Blur(BSNeopixel &bs, int fps=50, uint8_t h_lvl=100, uint8_t s_lvl=255)
+	Blur(BSNeopixel &bs, int fps=50, uint16_t h_lvl=100, uint8_t s_lvl=255)
 	: Effect(bs, min(fps, 25)), h_lvl(h_lvl), s_lvl(s_lvl)
 	{
 		randomSeed(analogRead(0));

@@ -99,8 +99,8 @@ private:
 	int countDotsNumber(uint8_t data[]);
 	uint32_t fgColor, bgColor;
 public:
-	Dots(BSNeopixel &bs)
-	: Effect(bs)
+	Dots(BSNeopixel &bs, float fps=10)
+	: Effect(bs, fps)
 	{
 		bgColor = BLUE;
 		fgColor = RED;

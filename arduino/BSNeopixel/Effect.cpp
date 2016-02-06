@@ -126,8 +126,9 @@ void Animation::step(uint8_t data[]) {
 
 void Dots::step(uint8_t data[])
 {
-    if (!data[5])
+    if (!make_step())
         return;
+
     bs.colorWipe(bgColor);
     int number_of_dots = countDotsNumber(data);
     for (int i=0; i < number_of_dots; i++) {
@@ -145,6 +146,7 @@ void Dots::setRandomDot()
 
 int Dots::countDotsNumber(uint8_t data[])
 {
+    return 4; //TODO: temporary solution
     int sum = 0;
     for (int i=0; i < 5 ; i++)
     {

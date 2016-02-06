@@ -11,7 +11,7 @@ int current_animation_no = 0;
 int animations_no;
 
 uint32_t last_time_changed;
-int duration_time_ms =90 * 1000;
+int duration_time_ms = 4 * 60 * 1000;
 
 uint8_t data[1];
 
